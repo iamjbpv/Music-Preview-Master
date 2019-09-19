@@ -12,4 +12,4 @@ To build the app for production type the command in your terminal.<br>
 <b>npm run build</b>
 
 You can see the demo here.<br>
-https://jb-villamayor.000webhostapp.com/Music-Master/
+<a href="https://jb-villamayor.000webhostapp.com/Music-Master/" target="_blank">Music Master Preview Demo</a>
