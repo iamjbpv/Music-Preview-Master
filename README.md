@@ -1,4 +1,4 @@
-# Music-Preview-Master
+# Music Preview Master
 A Web Application for previewing your favorite music (Using Spotify API)<br>
 This Web Application is made using <b>React.js</b> and the Back-End is <b>PHP, LARAVEL</b>.<br>
 The client side fetches data from the back-end, then the backend sends a JSON response.<br>
