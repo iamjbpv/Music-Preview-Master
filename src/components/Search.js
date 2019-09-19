@@ -5,7 +5,6 @@ class Search extends Component {
 
     componentDidMount(){
         let searched = false;
-        this.searchArtist(searched);
     }
     updateArtistQuery = event => {
         // console.log(event.target.value);

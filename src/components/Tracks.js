@@ -19,10 +19,16 @@ class Tracks extends Component {
             let albumData =  json.albums.filter(function(album) {
                 return album.id == id;
             });
+            this.getAlbumArt(albumData[0].images[0].url);
             this.setState({albumImage: albumData[0].images[0].url, albumTitle: albumData[0].name});
             this.fetchTracks(API_ADDRESS, id);
+            
         })
         .catch(error => alert(error.message));
+    }
+
+    getAlbumArt = (images) => {
+        this.props.getAlbumArt(images);
     }
 
     fetchTracks = (API_ADDRESS, id) => {
@@ -87,7 +93,6 @@ class Tracks extends Component {
     }
 
     trackIcon = (track) => {
-        // console.log(this.state.playingPreviewUrl);
         if (!track.preview_url) {
             return <span>N/A</span>;
         }
@@ -100,7 +105,6 @@ class Tracks extends Component {
         }
         
         return <span>&#9654;</span>;
-       
     }
 
     setArtist = (artistName) => {
@@ -111,8 +115,8 @@ class Tracks extends Component {
         this.props.goToAlbum();
     }
 
-    setPreviewUrl = (preview_url) => () => {
-        this.props.setPreviewUrl(preview_url);
+    setPreviewUrl = (preview_url,trackName) => () => {
+        this.props.setPreviewUrl(preview_url, trackName);
         if (!this.state.playing) {
             this.setState({ playing: true, playingPreviewUrl: preview_url });
         } else {
@@ -150,7 +154,7 @@ class Tracks extends Component {
                                     
                                     <div
                                         key={id} 
-                                        onClick={this.setPreviewUrl(preview_url,track)}
+                                        onClick={this.setPreviewUrl(preview_url,name)}
                                         className='track'
                                     >
                                         <img 

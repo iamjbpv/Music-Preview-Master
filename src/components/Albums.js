@@ -27,13 +27,13 @@ class Albums extends Component {
     }
 
     getAlbumArt = (images) => () => {
-        this.props.getAlbumArt(images[0]);
+        this.props.getAlbumArt(images[0].url);
     }
 
     render() {
         const artist_id = (this.props.artist) ? this.props.artist.id : '';
         const { albums } = this.props;
-        // console.log(albums);
+        console.log(artist_id);
         return (
             <div>
                 <div className='music-library-header'>
