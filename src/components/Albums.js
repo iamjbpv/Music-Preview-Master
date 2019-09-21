@@ -4,8 +4,7 @@ import CONFIG from '../data/config.js'
 
 const BASE_URL = CONFIG[0].base_url;
 
-const AlbumsList = props => {
-    const { id, name, images } = props.album;
+const AlbumsList = ({ album: {id, name, images}  }) => {
     return (
         <div>
             <img 
@@ -26,14 +25,12 @@ class Albums extends Component {
         this.props.getTrack(id,url);
     }
 
-    getAlbumArt = (images) => () => {
-        this.props.getAlbumArt(images[0].url);
-    }
+   
 
     render() {
         const artist_id = (this.props.artist) ? this.props.artist.id : '';
         const { albums } = this.props;
-        console.log(artist_id);
+        // console.log(artist_id);
         return (
             <div>
                 <div className='music-library-header'>
@@ -52,7 +49,7 @@ class Albums extends Component {
                                     key={album.id}
                                     className='track'
                                 >
-                                <Link onClick={this.getAlbumArt(album.images)} to={`artist/${artist_id}/tracks/${album.id}`}>
+                                <Link  to={`artist/${artist_id}/tracks/${album.id}`}>
                                     <AlbumsList key={album.id} album={album}/>
                                 </Link>
                                 </div>

@@ -4,7 +4,7 @@ import CONFIG from '../data/config';
 const API_ADDRESS = CONFIG[0].api_address;
 
 class Tracks extends Component {
-    state = { tracks: [], playing: false, audio: null, playingPreviewUrl: null, defaultVolume: 0, albumImage: '', albumTitle: null };
+    state = { artistName: null, tracks: [], playing: false, audio: null, playingPreviewUrl: null, defaultVolume: 0, albumArt: '', albumTitle: null };
    
 
     componentDidMount() {
@@ -19,16 +19,11 @@ class Tracks extends Component {
             let albumData =  json.albums.filter(function(album) {
                 return album.id == id;
             });
-            this.getAlbumArt(albumData[0].images[0].url);
-            this.setState({albumImage: albumData[0].images[0].url, albumTitle: albumData[0].name});
+            this.setState({artistName, albumArt: albumData[0].images[0].url, albumTitle: albumData[0].name});
             this.fetchTracks(API_ADDRESS, id);
             
         })
         .catch(error => alert(error.message));
-    }
-
-    getAlbumArt = (images) => {
-        this.props.getAlbumArt(images);
     }
 
     fetchTracks = (API_ADDRESS, id) => {
@@ -38,58 +33,6 @@ class Tracks extends Component {
             this.setState({tracks: json.items})
         })
         .catch(error => alert(error.message));
-    }
-
-    playAudio = previewUrl => () => {
-        const audio = new Audio(previewUrl);
-
-        if (!this.state.playing) {
-            this.fadeInAudio(audio);
-            this.setState({ playing: true, audio, playingPreviewUrl: previewUrl });
-        } else {
-            this.fadeOutAudio(audio);
-
-            if (this.state.playingPreviewUrl === previewUrl) {
-                this.setState({ playing: false });
-            } else {
-                this.fadeInAudio(audio);
-                this.setState({ audio, playingPreviewUrl: previewUrl });
-            }
-        }
-        
-    }
-
-    fadeInAudio = (audio) => {
-        audio.volume = this.state.defaultVolume;
-        audio.play();
-        let fadeInterval = setInterval(function(){
-            if(audio.volume >= 0.9){
-                audio.volume = 1;
-                clearInterval(fadeInterval);
-                return;
-            }
-            else {
-                audio.volume += 0.05;
-                // console.log(audio.volume);
-            }
-            
-        },100);
-    }
-
-    fadeOutAudio = () => {
-        let currentAudio = this.state.audio;
-
-        let fadeInterval = setInterval(function(){
-            if(currentAudio.volume <= 0.1){
-                currentAudio.pause();
-                clearInterval(fadeInterval);
-                return;
-            }
-            else {
-                currentAudio.volume -= 0.10;
-            }
-            
-        },100);
     }
 
     trackIcon = (track) => {
@@ -116,7 +59,6 @@ class Tracks extends Component {
     }
 
     setPreviewUrl = (preview_url,trackName) => () => {
-        this.props.setPreviewUrl(preview_url, trackName);
         if (!this.state.playing) {
             this.setState({ playing: true, playingPreviewUrl: preview_url });
         } else {
@@ -127,12 +69,10 @@ class Tracks extends Component {
                 this.setState({ playingPreviewUrl: preview_url });
             }
         }
+        this.props.setPreviewUrl(preview_url, trackName, this.state.artistName, this.state.albumArt, this.state.playing);
     }
 
     render() {
-        // console.log(this.props.albumImage);
-        // console.log(image);
-        // console.log(tracks);
         return (
             <div>
                 <div className='music-library-header'>
@@ -158,7 +98,7 @@ class Tracks extends Component {
                                         className='track'
                                     >
                                         <img 
-                                            src={this.state.albumImage} 
+                                            src={this.state.albumArt} 
                                             alt='track-image'
                                             className='track-image'
                                         />
