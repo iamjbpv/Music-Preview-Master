@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setPlayingTrue, setPlayingFalse, setAudio } from '../actions/control';
 
 class AudioControls extends Component {
-    state = { audiocontrols : { playing: false, audio: null, playingPreviewUrl: null, defaultVolume: 1, lastPreviewUrl: null } }
+    state = { defaultVolume: 1, lastPreviewUrl: null }
 
     statusIcon = (playingPreviewUrl) => {
         if (!playingPreviewUrl) {
@@ -9,67 +11,39 @@ class AudioControls extends Component {
         }
 
         if (
-            this.state.audiocontrols.playing &&
-            this.state.audiocontrols.playingPreviewUrl === playingPreviewUrl
+            this.props.audiocontrol.playing &&
+            this.props.audiocontrol.previewUrl === playingPreviewUrl
         ) {
+            // this.props.setPlayingTrue();
             return <span>| |</span>;
         }
-        
+        // this.props.setPlayingFalse();
         return <span>&#9654;</span>;
     }
 
-    callPlayAudio = (playingPreviewUrl) => () => {
-        this.playAudio(playingPreviewUrl);
+    callPlayAudio = () => () => {
+        if(this.props.audiocontrol.playing) {
+            this.props.setPlayingFalse();
+        }
+        else {
+            this.props.setPlayingTrue();
+        }
     }
 
     playAudio = (previewUrl) => {
-        if (!this.state.audiocontrols.playing) {
-
-            if(!this.state.audiocontrols.audio) {
-                const audio = new Audio(previewUrl);
-                this.fadeInAudio(audio);
-                this.setState({
-                    audiocontrols: {
-                        ...this.state.audiocontrols,
-                        audio, playingPreviewUrl: previewUrl, playing: true
-                    }
-                });
-            }
-            else {
-                // console.log('audio state', this.state.audiocontrols);
-                this.fadeInAudio(this.state.audiocontrols.audio);
-                this.setState({
-                    audiocontrols: {
-                        ...this.state.audiocontrols,
-                        playing: true, playingPreviewUrl: previewUrl
-                    }
-                });
-            }
-        } else {
-            this.fadeOutAudio(this.state.audiocontrols.audio);
-            if (this.state.audiocontrols.playingPreviewUrl === previewUrl) {
-                this.setState({
-                    audiocontrols: {
-                        ...this.state.audiocontrols,
-                        playing: false, lastPreviewUrl: previewUrl
-                    }
-                });
-            } else {
-                const audio = new Audio(previewUrl);
-                this.fadeInAudio(audio);
-                this.setState({
-                    audiocontrols: {
-                        ...this.state.audiocontrols,
-                        audio, playingPreviewUrl: previewUrl
-                    }
-                });
-            }
+        this.setState({playingPreviewUrl: previewUrl});
+        if (this.props.audiocontrol.playing) {
+            console.log('play');
+            this.fadeInAudio(this.props.audiocontrol.audio);
+        } 
+        else {
+            console.log('pause');
+            this.fadeOutAudio(this.props.audiocontrol.audio);
         }
-        
     }
 
     fadeInAudio = (audioObj) => {
-        audioObj.volume = this.state.audiocontrols.defaultVolume;
+        audioObj.volume = this.state.defaultVolume;
         audioObj.play();
         // let fadeInterval = setInterval(function(){
         //     if(audioObj.volume >= 0.9){
@@ -86,7 +60,7 @@ class AudioControls extends Component {
     }
 
     fadeOutAudio = () => {
-        let currentAudio = this.state.audiocontrols.audio;
+        let currentAudio = this.props.audiocontrol.audio;
         currentAudio.pause();
         // let fadeInterval = setInterval(function(){
         //     if(currentAudio.volume <= 0.1){
@@ -106,21 +80,15 @@ class AudioControls extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.audiocontrols !== this.props.audiocontrols) {
-            // this.playAudio(this.props.playingPreviewUrl);
-            // console.log('props',this.props.playingPreviewUrl);
-            this.playAudio(this.props.audiocontrols.playingPreviewUrl);
+        if (prevProps.audiocontrol !== this.props.audiocontrol) {
+            this.playAudio(this.props.audiocontrol.previewUrl);
         }
     }
 
     render() {
-        // console.log(this.props.artist);
-        // if(!artist) return null;
-        const albumArt = this.props.audiocontrols.albumArt ? this.props.audiocontrols.albumArt : 'http://www.byustore.com/byu-vinson/img/no_image_available.jpeg?resizeid=2&resizeh=1200&resizew=1200';
-        const playingArtist = (this.props.audiocontrols.playingArtist) ? this.props.audiocontrols.playingArtist : '';
-        const trackname = (this.props.audiocontrols.trackName) ? this.props.audiocontrols.trackName : '';
-        // console.log(trackname);
-        const { playingPreviewUrl } = this.props.audiocontrols;
+        // console.log('dispactched',this.props);
+
+        const { previewUrl, albumArt, artistName, trackName } = this.props.audiocontrol;
 
         return (
             <div className='audio-control-wrapper'>
@@ -133,10 +101,10 @@ class AudioControls extends Component {
                             <div className='ml-2 my-auto'>
                                 <div className='d-flex flex-column justify-content-start'>
                                     <div className='text-left'>
-                                        <h5 className='my-0'>{playingArtist}</h5>
+                                        <h5 className='my-0'>{artistName}</h5>
                                     </div>
                                     <div className='text-left'>
-                                        <p className='my-0 track-title'>{trackname}</p>
+                                        <p className='my-0 track-title'>{trackName}</p>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +112,7 @@ class AudioControls extends Component {
                     </div>
                     <div className='w-25 my-auto'>
                         <div className='d-flex justify-content-end'>
-                            <div onClick={this.callPlayAudio(playingPreviewUrl)}>{this.statusIcon(playingPreviewUrl)}</div>
+                            <div className='play' onClick={this.callPlayAudio(previewUrl)}>{this.statusIcon(previewUrl)}</div>
                         </div>
                     </div>
                 </div>
@@ -153,4 +121,13 @@ class AudioControls extends Component {
     }
 }
 
-export default AudioControls;
+const mapStateToProps = (state) => ({ 
+    audiocontrol: state.audiocontrol,
+    // any props you need else
+});
+
+export default connect(
+    // ({ control_status: { control_status,previewUrl } }) => ({ control_status,previewUrl }),
+    (mapStateToProps),
+    { setPlayingTrue, setPlayingFalse, setAudio }
+)(AudioControls);

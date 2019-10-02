@@ -112,6 +112,10 @@ h1, h2, h3, h4, h5 {
     width: 100%;
 }
 
+.play {
+    cursor: pointer;    
+}
+
 .album-art {
     height: 70px;
     width: 70px;

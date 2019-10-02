@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import CONFIG from '../data/config';
+import { connect } from 'react-redux';
+import { setPlayingTrue, setPlayingFalse, setTrack, setAudio } from '../actions/control';
 
 const API_ADDRESS = CONFIG[0].api_address;
 
@@ -41,8 +43,8 @@ class Tracks extends Component {
         }
 
         if (
-            this.state.playing &&
-            this.state.playingPreviewUrl === track.preview_url
+            this.props.audiocontrol.playing &&
+            this.props.audiocontrol.previewUrl === track.preview_url
         ) {
             return <span>| |</span>;
         }
@@ -58,18 +60,21 @@ class Tracks extends Component {
         this.props.goToAlbum();
     }
 
-    setPreviewUrl = (preview_url,trackName) => () => {
-        if (!this.state.playing) {
-            this.setState({ playing: true, playingPreviewUrl: preview_url });
-        } else {
-
-            if (this.state.playingPreviewUrl === preview_url) {
-                this.setState({ playing: false });
-            } else {
-                this.setState({ playingPreviewUrl: preview_url });
-            }
+    setPreviewUrl = (previewUrl,trackName) => () => {
+        if(!this.props.audiocontrol.audio) {
+            const audio = new Audio(previewUrl);
+            this.props.setTrack(true, previewUrl,this.state.albumArt,this.state.artistName, trackName, audio);
         }
-        this.props.setPreviewUrl(preview_url, trackName, this.state.artistName, this.state.albumArt, this.state.playing);
+        else if(this.props.audiocontrol.previewUrl === previewUrl) {
+            (this.props.audiocontrol.playing) ? this.props.setPlayingFalse() : this.props.setPlayingTrue();
+        }
+        else {
+            this.props.setPlayingFalse();
+            const audio = new Audio(previewUrl);
+            setTimeout(() => {
+                this.props.setTrack(true, previewUrl,this.state.albumArt,this.state.artistName, trackName, audio);
+            }, 50);
+        }
     }
 
     render() {
@@ -123,4 +128,12 @@ class Tracks extends Component {
     }
 }
 
-export default Tracks;
+const mapStateToProps = (state) => ({ 
+    audiocontrol: state.audiocontrol,
+    // any props you need else
+});
+
+export default connect(
+    (mapStateToProps),
+    { setPlayingTrue, setPlayingFalse, setTrack, setAudio }
+)(Tracks);

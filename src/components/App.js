@@ -55,16 +55,6 @@ class App extends Component {
         this.setState({displayAlbum: false})
     }
 
-    setPreviewUrl = (playingPreviewUrl,trackName,playingArtist,albumArt, playing) => {
-        this.setState({
-            audiocontrols: {
-                ...this.state.audiocontrols,
-                trackName, playingPreviewUrl, playingArtist, albumArt, playing
-            }
-        });
-        // this.playAudio(preview_url);
-    }
-
     render() {
         return (
             <div className='content-wrapper'>
@@ -84,7 +74,7 @@ class App extends Component {
                             {/* passing down call backs */}
                         </div>
                             <Route exact path={BASE_URL} render={(props) => <Albums albums={this.state.albums} artist={this.state.artist} {...props} /> } />
-                            <Route exact path={`${BASE_URL}artist/:artistid/tracks/:id`} render={(props) => <Tracks setArtist={this.setArtist} trackIcon={this.trackIcon} setPreviewUrl={this.setPreviewUrl} {...props} /> } />
+                            <Route exact path={`${BASE_URL}artist/:artistid/tracks/:id`} render={(props) => <Tracks setArtist={this.setArtist} trackIcon={this.trackIcon} {...props} /> } />
                     </div>
                     <div className='col-12'>
                         {/* passing state through props */}
