@@ -1,6 +1,6 @@
-import { SET_CONTROL, SET_TRACK, SET_AUDIO  } from '../actions/types';
+import { SET_CONTROL, SET_TRACK, SET_AUDIO, SET_VOLUME  } from '../actions/types';
 
-const DEFAULT_CONTROL_STATE = { playing: '', previewUrl: '', albumArt: 'http://www.byustore.com/byu-vinson/img/no_image_available.jpeg?resizeid=2&resizeh=1200&resizew=1200', artistName: '', trackName: '', audio: null };
+const DEFAULT_CONTROL_STATE = { playing: '', previewUrl: '', albumArt: 'http://www.byustore.com/byu-vinson/img/no_image_available.jpeg?resizeid=2&resizeh=1200&resizew=1200', artistName: '', trackName: '', audio: null, volume: 0.5 };
 
 const controlStateReducer = (state = DEFAULT_CONTROL_STATE, action) => {
     console.log('action',action);
@@ -11,6 +11,8 @@ const controlStateReducer = (state = DEFAULT_CONTROL_STATE, action) => {
             return { ...state, playing: action.playing, previewUrl: action.previewUrl, albumArt:action.albumArt, artistName: action.artistName, trackName: action.trackName, audio: action.audio };
         case SET_AUDIO:
                 return { ...state, audio: action.audio }
+        case SET_VOLUME:
+            return { ...state, volume: action.volume }
         default:
             return state;
     }

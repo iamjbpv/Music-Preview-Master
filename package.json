@@ -19,6 +19,7 @@
     "parcel-bundler": "^1.12.3",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "react-range": "^1.4.1",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",

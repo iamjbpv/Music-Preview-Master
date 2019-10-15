@@ -1,4 +1,4 @@
-import { SET_CONTROL, SET_TRACK, SET_AUDIO } from './types';
+import { SET_CONTROL, SET_TRACK, SET_AUDIO, SET_VOLUME } from './types';
 
 export const setPlayingTrue = () => {
     return { type: SET_CONTROL, playing: true};
@@ -14,6 +14,10 @@ export const setTrack = (playing,previewUrl,albumArt,artistName, trackName, audi
 
 export const setAudio = (audio) => {
     return { type: SET_AUDIO, audio: audio };
+}
+
+export const setVolume = (volume) => {
+    return { type: SET_VOLUME, volume: volume };
 }
 
 // export const setAlbumArt = (albumArt) => {

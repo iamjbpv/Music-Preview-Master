@@ -166,6 +166,14 @@ h1, h2, h3, h4, h5 {
     animation-duration: .500s;
 }
 
+@media only screen and (max-width: 575.98px) {
+    .mobile-volume{
+        position: absolute;
+        top: 20px;
+        display: none;
+    }
+}
+
 @keyframes fade-out {
     from {
         opacity: 100;

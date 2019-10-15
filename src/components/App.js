@@ -21,7 +21,7 @@ class App extends Component {
         if(artistName) {
             this.searchArtist(artistName);
         } else {
-            this.searchArtist('Taylor Swift');
+            this.searchArtist('THE VAMPS');
         }
     }
 
