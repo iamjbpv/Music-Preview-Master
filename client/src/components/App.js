@@ -35,9 +35,9 @@ class App extends Component {
                 fetch(`${API_ADDRESS}/albums/${artist.id}`)
                 .then(response => response.json())
                 .then(json => {
-                    // console.log('data receive');
+                    console.log(json.items);
                     this.setState({ artist });
-                    this.setState({albums: json.albums})
+                    this.setState({albums: json.items})
                 })
                 .then(() => {
                     if(searched === true) {

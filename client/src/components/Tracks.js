@@ -16,9 +16,9 @@ class Tracks extends Component {
         fetch(`${API_ADDRESS}/albums/${artistid}`)
         .then(response => response.json())
         .then(json => {
-            const artistName = json.albums[0].artists[0].name;
+            const artistName = json.items[0].artists[0].name;
             this.setArtist(artistName);
-            let albumData =  json.albums.filter(function(album) {
+            let albumData =  json.items.filter(function(album) {
                 return album.id == id;
             });
             this.setState({artistName, albumArt: albumData[0].images[0].url, albumTitle: albumData[0].name});

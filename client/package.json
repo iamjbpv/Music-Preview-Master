@@ -1,0 +1,28 @@
+{
+  "name": "music-preview-master",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
+    "start": "npm run build && live-server dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "history": "^4.10.1",
+    "live-server": "^1.2.1",
+    "parcel-bundler": "^1.12.3",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-range": "^1.4.2",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0"
+  }
+}
