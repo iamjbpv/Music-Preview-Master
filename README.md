@@ -14,4 +14,4 @@ To build the app for production type the command in your terminal.<br>
 <b>npm run build</b>
 
 You can see the demo here.<br>
-<a href="https://jb-villamayor.000webhostapp.com/Music-Master/">Music Master Preview Demo</a>
+<a href="https://music-preview-master.herokuapp.com/#/">Music Master Preview Demo</a>
