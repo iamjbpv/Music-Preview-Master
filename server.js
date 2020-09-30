@@ -50,6 +50,6 @@ app.use("/api/", require("./routes/api/spotify"));
 //static no dynamic files, server static files
 app.use(express.static(path.join(__dirname, 'client/dist')));
 
-const PORT = process.env.port || 5000;
+const PORT = process.env.port || 8080;
 
 app.listen(PORT, () => console.log(`Server stated on port ${PORT}`));
