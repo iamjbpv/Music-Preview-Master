@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "npm install --prefix client && npm start --prefix client",
+    "build": "npm start --prefix client && npm start",
     "start": "node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",

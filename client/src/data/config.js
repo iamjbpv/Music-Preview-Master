@@ -1,6 +1,6 @@
 const CONFIG = [
     {
-        api_address: 'http://localhost:5000/api',
+        api_address: '/api',
         base_url: '/'
     }
 ];
